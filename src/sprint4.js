@@ -80,7 +80,7 @@ TELAS["#/importar"] = async ()=>{
   const cursos = await db.list("cursos");
   return `<h1>Importar inscrições</h1><p class="sub">Cole os e-mails recebidos (o app acha todos os blocos de inscrição), ou importe uma planilha CSV.
     O bloco de cada inscrição tem um código de verificação: bloco cortado ou alterado é recusado e apontado.</p>
-    <div class="card"><h2 style="margin-top:0">1 · Colar os e-mails</h2>
+    <div class="card"><h2 style="margin-top:0"><label for="txtEmails">1 · Colar os e-mails</label></h2>
       <textarea id="txtEmails" rows="10" placeholder="Cole aqui os e-mails de inscrição, um abaixo do outro"></textarea>
       <div class="linha-botoes nao-imprimir"><button class="prim" id="btnLer">Ler e classificar</button>
         <button id="btnExemploEmails">Carregar os 60 e-mails de exemplo</button></div></div>
@@ -328,6 +328,7 @@ async function exportarTriagem(sigla, curso){
 /* ================= Sprint 6 · Triagem pelas diretorias (RN05) ================= */
 TELAS["#/triagem"] = async ()=>{
   const [cursos, dirs, triagens] = await Promise.all([db.list("cursos"), db.list("diretorias"), db.list("triagens")]);
+  if (!cursos.length || !dirs.length) return `<h1>Triagem</h1><div class="card vazio">A triagem precisa de um curso e de diretorias cadastradas. <a href="#/config">Carregue os dados fictícios</a> ou cadastre em <a href="#/cursos">Cursos</a>.</div>`;
   const dir = estado.tgDir || (dirs[0] && dirs[0].sigla) || "";
   const nomeDir = dirs.find(d=> d.sigla === dir)?.nome || dir;
   const curso = estado.tgCurso || (cursos[0] && cursos[0].id) || "";
